@@ -69,7 +69,19 @@ Additionally, we will **expose API endpoints** for:
 
 ## 🧬 Integration Workflow Diagram
 
-![Aeristo ETL Workflow Diagram](https://via.placeholder.com/1200x800.png?text=Aeristo+ETL+Workflow+Diagram)
+```mermaid
+graph LR
+  AX["Dynamics AX<br/>(Historical Data)"]:::system -->|"OData / SQL Server"| ADF["Azure Data Factory<br/>(Incremental ETL)"]:::etl
+  ADF -->|"REST API"| BC["D365 Business Central<br/>(Real-Time ERP)"]:::system
+  ADF -->|"Load Raw + Transformed Data"| SQL["Azure SQL<br/>(Staging Layer)"]:::db
+  SQL -->|"OData V4 / JSON"| API["Excel / R API<br/>Reporting & Shiny Apps"]:::reporting
+  BC -->|"Direct REST / OData"| API
+
+  classDef system fill:#4B8BBE,color:#fff;
+  classDef etl fill:#306998,color:#fff;
+  classDef db fill:#1E90FF,color:#fff;
+  classDef reporting fill:#228B22,color:#fff;
+```
 
 > *This diagram visualizes the incremental data integration workflow across Dynamics AX, Azure Data Factory, Business Central, Azure SQL, and API-driven reporting layers.*
 
@@ -135,4 +147,5 @@ Once in place, this pipeline enables real-time reporting via **Excel**, **R**, a
 ---
 
 > ✅ This proposal is designed for executive decision-makers, senior data engineers, and software architects. It ensures enterprise scalability and developer-friendly tools without compromising cost-efficiency or compatibility with modern data science stacks.
+
 
