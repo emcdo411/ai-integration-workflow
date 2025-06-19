@@ -105,12 +105,55 @@ graph LR
 
 ## 📊 Data Consumption for Reporting
 
+### 📊 How RShiny Connects and Adds Value
+
+**RShiny** is a powerful tool used by data analysts and scientists to build interactive dashboards, applications, and visual reports—similar to what you'd find in tools like Tableau or PowerBI, but with far greater customization and statistical depth.
+
+Here's how it fits into the Aeristo solution:
+
+* **Live Access to Data**: RShiny connects directly to Business Central’s APIs (REST or OData V4). That means any dashboard or visualization is pulling live, real-time data—no exports or stale spreadsheets.
+
+* **Fully Interactive Dashboards**: Whether you're tracking sales performance, supply chain movement, or vendor spend, RShiny allows you to click, filter, and zoom in on trends just like a premium enterprise BI tool.
+
+* **Custom Reporting & Forecasting**: R and RShiny allow data scientists to apply advanced models—like demand forecasting, anomaly detection, and customer segmentation—right inside the dashboards.
+
+* **Deployment on Internal Network or Azure**: Once built, these apps can be deployed on Aeristo’s intranet or through an Azure service, allowing department heads, executives, or production leads to see tailored insights instantly.
+
+* **Cost-Effective**: RShiny is open-source, which means no per-seat licensing like other enterprise tools. It’s powerful, secure, and budget-friendly.
+
+In short, RShiny allows Aeristo to move from static reports to **dynamic, self-service intelligence**—tailored to your industry, powered by real-time ERP data.
+
 * **Excel**: Power Query connects to either Azure SQL Staging or Business Central OData feeds
 * **R / RShiny**: Consumes Business Central data via OData V4 API or REST endpoints
 
 ---
 
 ## 📱 Compatible APIs for R & RShiny
+
+### 🔍 What Are OData V4 and REST APIs — and Why They Matter
+
+To connect RShiny dashboards and Excel reports to Business Central in real-time, we rely on two powerful technologies: **OData V4** and **REST APIs**.
+
+* **OData V4 (Open Data Protocol)**: Think of this as a structured language that allows Excel, R, or Power BI to talk directly to Business Central. It’s like giving your reporting tools a secure pass to go into your ERP and grab the latest data—live and on demand.
+
+* **REST API (Representational State Transfer)**: REST is a modern, lightweight way for apps (like RShiny) to get very specific pieces of data, securely and in real time. REST APIs are flexible, fast, and highly compatible with advanced analytics tools. If OData is like Excel-friendly language, REST is what developers and data scientists use for full customization.
+
+These technologies mean we don’t need to export files or do manual uploads. Everything updates in real time, so reports and dashboards always reflect the current state of your business.
+
+---
+
+### 💵 Estimated Tooling Costs (Annualized)
+
+| Tool / Service                 | Purpose                                          | Estimated Annual Cost            |
+| ------------------------------ | ------------------------------------------------ | -------------------------------- |
+| Azure Data Factory             | ETL pipeline for AX → BC integration             | \$1,200 - \$3,000                |
+| Azure SQL (Staging Layer)      | Temporary storage and transformation layer       | \$600 - \$1,500                  |
+| Microsoft Dynamics 365 BC API  | OData/REST API access (included in D365 license) | Bundled with license             |
+| RStudio + RShiny (open-source) | Dashboard & analytics engine                     | Free (hosted internally)         |
+| Optional: RShiny Server Pro    | Managed RShiny deployment (for IT support)       | \~\$10,000 (optional enterprise) |
+| Excel / Power Query            | Excel integration via OData                      | Bundled with Office license      |
+
+> These estimates are based on average Azure pricing tiers and assume a mid-size data volume. Final costs may vary based on refresh frequency and storage footprint.
 
 ### 🔗 OData V4
 
@@ -163,6 +206,7 @@ Once in place, this pipeline enables real-time reporting via **Excel**, **R**, a
 ---
 
 > ✅ This proposal is designed for executive decision-makers, senior data engineers, and software architects. It ensures enterprise scalability and developer-friendly tools without compromising cost-efficiency or compatibility with modern data science stacks.
+
 
 
 
