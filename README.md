@@ -69,6 +69,22 @@ Additionally, we will **expose API endpoints** for:
 
 ## 🧬 Integration Workflow Diagram
 
+### 🔍 Executive Overview
+
+This diagram illustrates how Aeristo's historical and live business data will be seamlessly connected, allowing for enterprise-grade reporting and data visibility across departments.
+
+**Here’s how each component works:**
+
+* **Dynamics AX (Historical Data)**: This is where Aeristo’s customer, vendor, sales, and purchasing history lived before 2023. While it's no longer the active system, this data is too valuable to discard.
+
+* **Azure Data Factory**: Think of this as the data pipeline. It smartly extracts the data from AX, transforms it so it looks like the current system’s format, and loads it where it’s needed. It does this in small batches, so there's no disruption to your operations.
+
+* **D365 Business Central (Live ERP)**: This is the heart of Aeristo’s day-to-day business. Once transformed, the historical data lands here and is blended with your current data, enabling complete visibility for leadership, sales, and finance teams.
+
+* **Azure SQL (Staging Layer)**: This acts like a temporary holding pen. It’s useful for testing and cleaning up data before it reaches Business Central, or for storing specific reports.
+
+* **Excel / R API Reporting**: This is where the value becomes visible. Whether a manager prefers Excel or your data scientists work in R and Shiny, both teams will have real-time access to updated data for decision-making, forecasting, and dashboard creation.
+
 ```mermaid
 graph LR
   AX["Dynamics AX<br/>(Historical Data)"]:::system -->|"OData / SQL Server"| ADF["Azure Data Factory<br/>(Incremental ETL)"]:::etl
@@ -147,5 +163,6 @@ Once in place, this pipeline enables real-time reporting via **Excel**, **R**, a
 ---
 
 > ✅ This proposal is designed for executive decision-makers, senior data engineers, and software architects. It ensures enterprise scalability and developer-friendly tools without compromising cost-efficiency or compatibility with modern data science stacks.
+
 
 
