@@ -140,6 +140,63 @@ To connect RShiny dashboards and Excel reports to Business Central in real-time,
 
 These technologies mean we don’t need to export files or do manual uploads. Everything updates in real time, so reports and dashboards always reflect the current state of your business.
 
+### 🚀 How They're Deployed with Microsoft Dynamics 365
+
+Both APIs are already **enabled by default** in Microsoft Dynamics 365 Business Central (cloud). Here's how they are typically deployed:
+
+#### Step 1: Enable Web Services in Business Central
+
+Within Business Central:
+
+* Navigate to **Web Services** (`Search > Web Services`)
+* Enable the OData and SOAP endpoints for the relevant tables or queries
+* For REST, use the available standard or custom API pages
+
+#### Step 2: Expose an API or OData Feed
+
+You can publish an OData feed like this:
+
+```plaintext
+https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/ODataV4/Customer
+```
+
+Or call a REST endpoint for customers:
+
+```http
+GET https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/api/v2.0/companies({company-id})/customers
+Authorization: Bearer <access_token>
+```
+
+These are the URLs and tokens your R scripts or Excel Power Query tools will use.
+
+#### Step 3: Authenticate Using Azure AD
+
+* Register your RShiny app or Excel workbook as an **Azure Active Directory (AAD)** application
+* Grant it permissions to access Business Central APIs
+
+#### Step 4: Query Data from R
+
+Here’s an example of pulling live customer data in R:
+
+```r
+library(httr)
+url <- "https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/api/v2.0/companies({company-id})/customers"
+res <- GET(url, add_headers(Authorization = paste("Bearer", access_token)))
+data <- content(res)
+```
+
+This ensures your apps and reports are updated in real time—without moving or exporting data manually.
+
+> With this setup, Aeristo gains a modern, secure, and scalable pipeline for analytics and dashboards without disrupting core operations.
+
+To connect RShiny dashboards and Excel reports to Business Central in real-time, we rely on two powerful technologies: **OData V4** and **REST APIs**.
+
+* **OData V4 (Open Data Protocol)**: Think of this as a structured language that allows Excel, R, or Power BI to talk directly to Business Central. It’s like giving your reporting tools a secure pass to go into your ERP and grab the latest data—live and on demand.
+
+* **REST API (Representational State Transfer)**: REST is a modern, lightweight way for apps (like RShiny) to get very specific pieces of data, securely and in real time. REST APIs are flexible, fast, and highly compatible with advanced analytics tools. If OData is like Excel-friendly language, REST is what developers and data scientists use for full customization.
+
+These technologies mean we don’t need to export files or do manual uploads. Everything updates in real time, so reports and dashboards always reflect the current state of your business.
+
 ---
 
 ### 💵 Estimated Tooling Costs (Annualized)
@@ -206,6 +263,7 @@ Once in place, this pipeline enables real-time reporting via **Excel**, **R**, a
 ---
 
 > ✅ This proposal is designed for executive decision-makers, senior data engineers, and software architects. It ensures enterprise scalability and developer-friendly tools without compromising cost-efficiency or compatibility with modern data science stacks.
+
 
 
 
