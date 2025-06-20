@@ -1,5 +1,4 @@
 🤩 Aeristo Data Integration Case Study & Phased Implementation Plan
-
 📌 Summary
 This document presents a cost-effective and scalable ETL and data integration strategy for Aeristo, a luxury leather goods company specializing in bespoke interiors for luxury automobiles and private aircraft (e.g., G6, G7). The objective is to integrate legacy data from Microsoft Dynamics AX (pre-2023) with Microsoft Dynamics 365 Business Central (current live data) and enable real-time analytics via Excel, R, and R Shiny applications. The implementation is structured in three phases—data integration and ETL pipeline setup, reporting and dashboard development, and ongoing optimization—to ensure a seamless, scalable solution.
 📚 Table of Contents
