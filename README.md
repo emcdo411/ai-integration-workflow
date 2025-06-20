@@ -1,91 +1,190 @@
-# 🤩 Aeristo Data Integration Case Study & Proposal
+🤩 Aeristo Data Integration Case Study & Phased Implementation Plan
 
-## 📌 Summary
+📌 Summary
+This document presents a cost-effective and scalable ETL and data integration strategy for Aeristo, a luxury leather goods company specializing in bespoke interiors for luxury automobiles and private aircraft (e.g., G6, G7). The objective is to integrate legacy data from Microsoft Dynamics AX (pre-2023) with Microsoft Dynamics 365 Business Central (current live data) and enable real-time analytics via Excel, R, and R Shiny applications. The implementation is structured in three phases—data integration and ETL pipeline setup, reporting and dashboard development, and ongoing optimization—to ensure a seamless, scalable solution.
+📚 Table of Contents
 
-This document presents a **cost-effective and scalable ETL and data integration strategy** for Aeristo, a luxury leather goods company specializing in bespoke interiors for luxury automobiles and private aircraft (e.g., G6, G7). The objective is to integrate legacy data from **Microsoft Dynamics AX (pre-2023)** with **Microsoft Dynamics 365 Business Central (current live data)** and ensure future compatibility with Excel-based reporting, R, and RShiny applications for real-time analytics.
+Business Problem
+Technical Overview
+ETL Strategy & Middleware
+Integration Workflow Diagram
+Data Consumption for Reporting
+Compatible APIs for R & RShiny
+Phased Implementation Plan
+Estimated Tooling Costs
+Tech Stack
+Conclusion
 
----
-
-## 📚 Table of Contents
-
-1. [Business Problem](#business-problem)
-2. [Technical Overview](#technical-overview)
-3. [ETL Strategy & Middleware](#etl-strategy--middleware)
-4. [Integration Workflow Diagram](#integration-workflow-diagram)
-5. [Data Consumption for Reporting](#data-consumption-for-reporting)
-6. [Compatible APIs for R & RShiny](#compatible-apis-for-r--rshiny)
-7. [Tech Stack](#tech-stack)
-8. [Conclusion](#conclusion)
-
----
-
-## 🧭 Business Problem
-
+🧭 Business Problem
 Aeristo operates two parallel systems:
 
-* **Microsoft Dynamics AX**: Legacy system used pre-2023 for **customer/vendor records, historical sales, and purchasing history**.
-* **Microsoft D365 Business Central**: Current real-time ERP system, source of operational truth post-2023.
+Microsoft Dynamics AX: Legacy system used pre-2023 for customer/vendor records, historical sales, and purchasing history.
+Microsoft D365 Business Central: Current real-time ERP system, the source of operational truth post-2023.
 
-**Key Challenge**: These systems do not communicate, limiting data-driven decision-making and report creation.
+Key Challenge: These systems do not communicate, limiting data-driven decision-making and report creation, which hinders Aeristo’s ability to leverage historical data for inventory management, sales forecasting, and customer insights in their luxury leather operations.
+⚙️ Technical Overview
+The proposed solution involves an ETL pipeline to:
 
----
+Extract historical data from Dynamics AX.
+Transform it into a schema-aligned format for Business Central.
+Load it incrementally to avoid system overload.
 
-## ⚙️ Technical Overview
+Additionally, the solution exposes API endpoints for:
 
-We propose an **ETL pipeline** that will:
+R and R Shiny dashboards for advanced analytics.
+Excel-based reporting for stakeholder accessibility.
 
-* Extract historical data from Dynamics AX
-* Transform it into schema-aligned format for Business Central
-* Load it incrementally (not one-swoop due to system load concerns)
+The project is divided into three phases:
 
-Additionally, we will **expose API endpoints** for:
+Phase 1: Data Integration and ETL Pipeline Setup (3-4 months).
+Phase 2: Reporting and Dashboard Development (2-3 months).
+Phase 3: Optimization and Maintenance (ongoing).
 
-* R & RShiny dashboards
-* Excel-based reporting
+🛠️ ETL Strategy & Middleware
+🔄 ETL Process (Incremental)
+The ETL process is designed to unify historical and live data efficiently:
 
----
+Extract: Pull data from Dynamics AX via SQL Server or OData.
+Transform: Align schemas, reformat dates, and tag metadata.
+Load: Transfer transformed data to Business Central via APIs or an intermediary Azure SQL database.
 
-## 🛠️ ETL Strategy & Middleware
+🧍️‍⚖️ Middleware: Azure Data Factory
 
-### 🔄 ETL Process (Incremental)
+Cost-effective, low-code cloud ETL tool.
+Native connectors for Dynamics AX, D365 Business Central, Azure SQL, and Excel.
+Supports incremental loads, scheduling, and logging.
 
-1. **Extract**: AX data via SQL Server or OData
-2. **Transform**: Schema conversion, date alignment, metadata tagging
-3. **Load**: To Business Central via APIs or intermediary Azure SQL DB
+✅ Benefits
 
-### 🧍️‍⚖️ Middleware: Azure Data Factory
+No local infrastructure required.
+Compatible with Excel/Power Query for reporting.
+Governed via Azure Security & Logging for compliance.
 
-* **Cost-effective, low-code cloud ETL tool**
-* Native connectors for Dynamics AX, D365 BC, Azure SQL, Excel
-* Supports **incremental loads, scheduling, and logging**
+🛠️ Phase 1: Data Integration and ETL Pipeline Setup
+Objective: Establish an incremental ETL pipeline to extract historical data from Dynamics AX, transform it, and load it into Business Central, with a staging layer for data validation.
+Estimated Timeframe: 3-4 months (12-16 weeks, assuming 20-30 hours/week for a contract solutions architect).
+Tasks Involved:
 
-### ✅ Benefits
+Assess Data Sources:
+Map Dynamics AX schema (customer, vendor, sales, purchasing) to Business Central schema.
+Identify data volume (e.g., ~500K records) and quality issues (e.g., missing fields, duplicates).
 
-* No local infrastructure needed
-* Compatible with Excel/Power Query
-* Governed via Azure Security & Logging
 
----
+Configure Azure Data Factory (ADF):
+Set up ADF pipeline with connectors for Dynamics AX (SQL Server/OData) and Business Central (REST API).
+Define incremental load logic (e.g., based on last modified date).
 
-## 🧬 Integration Workflow Diagram
 
-### 🔍 Executive Overview
+Set Up Azure SQL Staging Layer:
+Create a staging database to store raw and transformed data.
+Implement schema alignment and data cleansing.
 
-This diagram illustrates how Aeristo's historical and live business data will be seamlessly connected, allowing for enterprise-grade reporting and data visibility across departments.
 
-**Here’s how each component works:**
+Develop ETL Pipeline:
+Extract data from AX via SQL queries or OData.
+Transform data (e.g., date formats, field mappings) using ADF or SQL.
+Load transformed data into Business Central via REST API or Azure SQL.
 
-* **Dynamics AX (Historical Data)**: This is where Aeristo’s customer, vendor, sales, and purchasing history lived before 2023. While it's no longer the active system, this data is too valuable to discard.
 
-* **Azure Data Factory**: Think of this as the data pipeline. It smartly extracts the data from AX, transforms it so it looks like the current system’s format, and loads it where it’s needed. It does this in small batches, so there's no disruption to your operations.
+Test and Validate:
+Run pilot loads (e.g., 10% of data) to verify data integrity.
+Log errors using ADF monitoring tools.
 
-* **D365 Business Central (Live ERP)**: This is the heart of Aeristo’s day-to-day business. Once transformed, the historical data lands here and is blended with your current data, enabling complete visibility for leadership, sales, and finance teams.
 
-* **Azure SQL (Staging Layer)**: This acts like a temporary holding pen. It’s useful for testing and cleaning up data before it reaches Business Central, or for storing specific reports.
+Enable API Access:
+Configure OData V4 and REST APIs in Business Central for future reporting.
 
-* **Excel / R API Reporting**: This is where the value becomes visible. Whether a manager prefers Excel or your data scientists work in R and Shiny, both teams will have real-time access to updated data for decision-making, forecasting, and dashboard creation.
 
-```mermaid
+
+Commands and Code Snippets:
+
+Extract from Dynamics AX (SQL Server):-- Query customer data from AX
+SELECT CustAccount, Name, SalesCurrencyCode, ModifiedDateTime
+FROM CustTable
+WHERE ModifiedDateTime >= '2022-01-01';
+
+
+Configure ADF Pipeline (JSON Definition):{
+  "name": "AX_to_BC_Pipeline",
+  "properties": {
+    "activities": [
+      {
+        "name": "CopyAXtoAzureSQL",
+        "type": "Copy",
+        "inputs": [{ "referenceName": "AX_SQLSource", "type": "DatasetReference" }],
+        "outputs": [{ "referenceName": "AzureSQLStaging", "type": "DatasetReference" }],
+        "typeProperties": {
+          "source": { "type": "SqlServerSource", "query": "SELECT * FROM CustTable" },
+          "sink": { "type": "SqlSink" }
+        }
+      },
+      {
+        "name": "TransformData",
+        "type": "DataFlow",
+        "typeProperties": {
+          "sources": [{ "dataset": { "referenceName": "AzureSQLStaging" } }],
+          "sinks": [{ "dataset": { "referenceName": "AzureSQLTransformed" } }],
+          "transformations": [
+            { "name": "MapFields", "type": "Select", "mapping": { "CustAccount": "CustomerNo", "Name": "CustomerName" } }
+          ]
+        }
+      },
+      {
+        "name": "LoadToBC",
+        "type": "Copy",
+        "inputs": [{ "referenceName": "AzureSQLTransformed", "type": "DatasetReference" }],
+        "outputs": [{ "referenceName": "BC_RESTSink", "type": "DatasetReference" }],
+        "typeProperties": {
+          "source": { "type": "SqlSource" },
+          "sink": {
+            "type": "RestSink",
+            "requestMethod": "POST",
+            "httpRequest": {
+              "url": "https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/api/v2.0/companies({company-id})/customers",
+              "headers": { "Authorization": "Bearer {access_token}" }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+
+Create Azure SQL Staging Table:CREATE TABLE Staging_Customers (
+    CustomerNo NVARCHAR(50),
+    CustomerName NVARCHAR(100),
+    SalesCurrencyCode NVARCHAR(10),
+    ModifiedDateTime DATETIME,
+    LoadDate DATETIME DEFAULT GETDATE()
+);
+
+
+Enable OData in Business Central (via UI or AL code):-- Navigate to Web Services in Business Central
+-- Publish OData endpoint: /ODataV4/Customer
+
+
+Test API Access in R:library(httr)
+library(jsonlite)
+url <- "https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/ODataV4/Customer"
+res <- GET(url, add_headers(Authorization = paste("Bearer", access_token)))
+data <- content(res, "parsed")
+
+
+
+Phase 1 Tech Stack:
+Phase 1 R Packages:
+🧬 Integration Workflow Diagram
+🔍 Executive Overview
+This diagram illustrates how Aeristo’s historical and live business data will be seamlessly connected, enabling enterprise-grade reporting and data visibility across departments.
+How Each Component Works:
+
+Dynamics AX (Historical Data): Stores pre-2023 customer, vendor, sales, and purchasing history—valuable data that cannot be discarded.
+Azure Data Factory: Acts as the data pipeline, extracting data from AX, reformatting it, and loading it in small batches to avoid operational disruptions.
+D365 Business Central (Live ERP): The core system for daily operations, where historical data is blended with current data for complete visibility.
+Azure SQL (Staging Layer): A temporary holding area for testing and cleaning data before it reaches Business Central.
+Excel / R API Reporting: Enables real-time access to unified data for decision-making, forecasting, and dashboard creation.
+
 graph LR
   AX["Dynamics AX<br/>(Historical Data)"]:::system -->|"OData / SQL Server"| ADF["Azure Data Factory<br/>(Incremental ETL)"]:::etl
   ADF -->|"REST API"| BC["D365 Business Central<br/>(Real-Time ERP)"]:::system
@@ -97,172 +196,272 @@ graph LR
   classDef etl fill:#306998,color:#fff;
   classDef db fill:#1E90FF,color:#fff;
   classDef reporting fill:#228B22,color:#fff;
-```
 
-> *This diagram visualizes the incremental data integration workflow across Dynamics AX, Azure Data Factory, Business Central, Azure SQL, and API-driven reporting layers.*
 
----
+This diagram visualizes the incremental data integration workflow across Dynamics AX, Azure Data Factory, Business Central, Azure SQL, and API-driven reporting layers.
 
-## 📊 Data Consumption for Reporting
+📊 Data Consumption for Reporting
+📊 How R Shiny Connects and Adds Value
+R Shiny enables data analysts and scientists to build interactive dashboards and visual reports, offering greater customization and statistical depth than tools like Tableau or PowerBI.
+Benefits for Aeristo:
 
-### 📊 How RShiny Connects and Adds Value
+Live Data Access: Connects directly to Business Central’s APIs (REST or OData V4) for real-time data without manual exports.
+Interactive Dashboards: Allows users to filter and explore trends (e.g., sales, supply chain, vendor spend).
+Custom Analytics: Supports advanced models like demand forecasting and customer segmentation.
+Deployment Flexibility: Apps can be hosted on Aeristo’s intranet or Azure, accessible to executives and production leads.
+Cost-Effective: Open-source, avoiding per-seat licensing costs.
 
-**RShiny** is a powerful tool used by data analysts and scientists to build interactive dashboards, applications, and visual reports—similar to what you'd find in tools like Tableau or PowerBI, but with far greater customization and statistical depth.
+Excel Integration: Power Query connects to Azure SQL or Business Central OData feeds for stakeholder-friendly reports.
+🛠️ Phase 2: Reporting and Dashboard Development
+Objective: Develop interactive dashboards and reports using PowerBI, Excel, and R Shiny, leveraging the unified data from Phase 1.
+Estimated Timeframe: 2-3 months (8-12 weeks).
+Tasks Involved:
 
-Here's how it fits into the Aeristo solution:
+Design Reporting Requirements:
+Gather stakeholder needs (e.g., sales trends, inventory levels).
+Define KPIs (e.g., hides available vs. demand forecast).
 
-* **Live Access to Data**: RShiny connects directly to Business Central’s APIs (REST or OData V4). That means any dashboard or visualization is pulling live, real-time data—no exports or stale spreadsheets.
 
-* **Fully Interactive Dashboards**: Whether you're tracking sales performance, supply chain movement, or vendor spend, RShiny allows you to click, filter, and zoom in on trends just like a premium enterprise BI tool.
+Build PowerBI Dashboards:
+Connect PowerBI to Business Central OData feed.
+Create visuals for inventory, sales, and vendor performance.
 
-* **Custom Reporting & Forecasting**: R and RShiny allow data scientists to apply advanced models—like demand forecasting, anomaly detection, and customer segmentation—right inside the dashboards.
 
-* **Deployment on Internal Network or Azure**: Once built, these apps can be deployed on Aeristo’s intranet or through an Azure service, allowing department heads, executives, or production leads to see tailored insights instantly.
+Develop Excel Reports:
+Use Power Query to pull data from Azure SQL or Business Central.
+Automate refresh schedules.
 
-* **Cost-Effective**: RShiny is open-source, which means no per-seat licensing like other enterprise tools. It’s powerful, secure, and budget-friendly.
 
-In short, RShiny allows Aeristo to move from static reports to **dynamic, self-service intelligence**—tailored to your industry, powered by real-time ERP data.
+Create R Shiny Dashboards:
+Build interactive apps for advanced analytics (e.g., demand forecasting).
+Deploy on internal server or shinyapps.io.
 
-* **Excel**: Power Query connects to either Azure SQL Staging or Business Central OData feeds
-* **R / RShiny**: Consumes Business Central data via OData V4 API or REST endpoints
 
----
+Validate Reports:
+Ensure data accuracy with stakeholders.
+Optimize query performance.
 
-## 📱 Compatible APIs for R & RShiny
 
-### 🔍 What Are OData V4 and REST APIs — and Why They Matter
 
-To connect RShiny dashboards and Excel reports to Business Central in real-time, we rely on two powerful technologies: **OData V4** and **REST APIs**.
+Commands and Code Snippets:
 
-* **OData V4 (Open Data Protocol)**: Think of this as a structured language that allows Excel, R, or Power BI to talk directly to Business Central. It’s like giving your reporting tools a secure pass to go into your ERP and grab the latest data—live and on demand.
+PowerBI OData Connection (via PowerBI Desktop):Source = OData.Feed("https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/ODataV4/Customer")
 
-* **REST API (Representational State Transfer)**: REST is a modern, lightweight way for apps (like RShiny) to get very specific pieces of data, securely and in real time. REST APIs are flexible, fast, and highly compatible with advanced analytics tools. If OData is like Excel-friendly language, REST is what developers and data scientists use for full customization.
 
-These technologies mean we don’t need to export files or do manual uploads. Everything updates in real time, so reports and dashboards always reflect the current state of your business.
+Excel Power Query (M Query):let
+    Source = OData.Feed("https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/ODataV4/Customer"),
+    Customers = Source{[Name="Customers"]}[Data]
+in
+    Customers
 
-### 🚀 How They're Deployed with Microsoft Dynamics 365
 
-Both APIs are already **enabled by default** in Microsoft Dynamics 365 Business Central (cloud). Here's how they are typically deployed:
+R Shiny App for Inventory Dashboard:library(shiny)
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(ggplot2)
 
-#### Step 1: Enable Web Services in Business Central
+# Mock Business Central data
+get_bc_data <- function() {
+    data <- data.frame(
+        CustomerNo = c("C001", "C002", "C003"),
+        LeatherType = c("Black Calf", "Navy Suede", "Red Aniline"),
+        OrderQty = c(100, 150, 80),
+        DeliveryDate = as.Date(c("2025-07-20", "2025-08-01", "2025-08-15"))
+    )
+    return(data)
+}
 
-Within Business Central:
+# UI
+ui <- fluidPage(
+    titlePanel("Aeristo Inventory Dashboard"),
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("leatherType", "Select Leather Type:", choices = c("All", "Black Calf", "Navy Suede", "Red Aniline"))
+        ),
+        mainPanel(
+            plotOutput("inventoryPlot")
+        )
+    )
+)
 
-* Navigate to **Web Services** (`Search > Web Services`)
-* Enable the OData and SOAP endpoints for the relevant tables or queries
-* For REST, use the available standard or custom API pages
+# Server
+server <- function(input, output) {
+    data <- reactive({
+        df <- get_bc_data()
+        if (input$leatherType != "All") {
+            df <- filter(df, LeatherType == input$leatherType)
+        }
+        df
+    })
 
-#### Step 2: Expose an API or OData Feed
+    output$inventoryPlot <- renderPlot({
+        ggplot(data(), aes(x = DeliveryDate, y = OrderQty, fill = LeatherType)) +
+            geom_bar(stat = "identity") +
+            theme_minimal() +
+            labs(title = "Leather Order Quantities")
+    })
+}
 
-You can publish an OData feed like this:
+# Run app
+shinyApp(ui, server)
 
-```plaintext
-https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/ODataV4/Customer
-```
 
-Or call a REST endpoint for customers:
 
-```http
+Phase 2 Tech Stack:
+Phase 2 R Packages:
+📱 Compatible APIs for R & RShiny
+🔍 What Are OData V4 and REST APIs — and Why They Matter
+To enable real-time reporting, we leverage OData V4 and REST APIs:
+
+OData V4: A structured protocol allowing Excel, R, or PowerBI to access Business Central data live, like a secure pass to the ERP system.
+REST API: A lightweight, flexible method for R Shiny to retrieve specific data in real time, ideal for custom analytics.
+
+These APIs eliminate manual data exports, ensuring reports and dashboards reflect the current state of Aeristo’s business.
+🚀 Deployment with Microsoft Dynamics 365
+Both APIs are enabled by default in Business Central (cloud). The deployment process includes:
+
+Enable Web Services:
+Navigate to Web Services in Business Central (Search > Web Services).
+Enable OData and SOAP endpoints for relevant tables or queries.
+Use standard or custom API pages for REST.
+
+
+Expose API/OData Feed:https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/ODataV4/Customer
+
 GET https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/api/v2.0/companies({company-id})/customers
 Authorization: Bearer <access_token>
-```
 
-These are the URLs and tokens your R scripts or Excel Power Query tools will use.
 
-#### Step 3: Authenticate Using Azure AD
+Authenticate Using Azure AD:
+Register R Shiny apps or Excel workbooks as Azure Active Directory (AAD) applications.
+Grant permissions to access Business Central APIs.
 
-* Register your RShiny app or Excel workbook as an **Azure Active Directory (AAD)** application
-* Grant it permissions to access Business Central APIs
 
-#### Step 4: Query Data from R
-
-Here’s an example of pulling live customer data in R:
-
-```r
-library(httr)
+Query Data from R:library(httr)
+library(jsonlite)
 url <- "https://api.businesscentral.dynamics.com/v2.0/{tenant-id}/sandbox/api/v2.0/companies({company-id})/customers"
 res <- GET(url, add_headers(Authorization = paste("Bearer", access_token)))
-data <- content(res)
-```
+data <- content(res, "parsed")
 
-This ensures your apps and reports are updated in real time—without moving or exporting data manually.
 
-> With this setup, Aeristo gains a modern, secure, and scalable pipeline for analytics and dashboards without disrupting core operations.
 
-To connect RShiny dashboards and Excel reports to Business Central in real-time, we rely on two powerful technologies: **OData V4** and **REST APIs**.
 
-* **OData V4 (Open Data Protocol)**: Think of this as a structured language that allows Excel, R, or Power BI to talk directly to Business Central. It’s like giving your reporting tools a secure pass to go into your ERP and grab the latest data—live and on demand.
+This setup ensures a modern, secure, and scalable pipeline for analytics without disrupting operations.
 
-* **REST API (Representational State Transfer)**: REST is a modern, lightweight way for apps (like RShiny) to get very specific pieces of data, securely and in real time. REST APIs are flexible, fast, and highly compatible with advanced analytics tools. If OData is like Excel-friendly language, REST is what developers and data scientists use for full customization.
+🛠️ Phased Implementation Plan
+Phase 3: Optimization and Maintenance
+Objective: Monitor, optimize, and maintain the ETL pipeline and reporting tools, adding enhancements as needed.
+Estimated Timeframe: Ongoing (post-Phase 2, ~1-2 hours/week initially).
+Tasks Involved:
 
-These technologies mean we don’t need to export files or do manual uploads. Everything updates in real time, so reports and dashboards always reflect the current state of your business.
+Monitor ETL Pipeline:
+Check ADF logs for errors or performance issues.
+Adjust incremental load schedules if needed.
 
----
 
-### 💵 Estimated Tooling Costs (Annualized)
+Optimize Data Queries:
+Index Azure SQL tables for faster reporting.
+Cache frequent API calls in Business Central.
 
-| Tool / Service                 | Purpose                                          | Estimated Annual Cost            |
-| ------------------------------ | ------------------------------------------------ | -------------------------------- |
-| Azure Data Factory             | ETL pipeline for AX → BC integration             | \$1,200 - \$3,000                |
-| Azure SQL (Staging Layer)      | Temporary storage and transformation layer       | \$600 - \$1,500                  |
-| Microsoft Dynamics 365 BC API  | OData/REST API access (included in D365 license) | Bundled with license             |
-| RStudio + RShiny (open-source) | Dashboard & analytics engine                     | Free (hosted internally)         |
-| Optional: RShiny Server Pro    | Managed RShiny deployment (for IT support)       | \~\$10,000 (optional enterprise) |
-| Excel / Power Query            | Excel integration via OData                      | Bundled with Office license      |
 
-> These estimates are based on average Azure pricing tiers and assume a mid-size data volume. Final costs may vary based on refresh frequency and storage footprint.
+Enhance Dashboards:
+Add new KPIs or visuals based on stakeholder feedback.
+Update R Shiny apps with features like predictive models.
 
-### 🔗 OData V4
 
-* Native to D365 BC
-* Easy integration with `httr`, `tidyverse`, or `RODBC`
+Train Users:
+Document processes for Aeristo’s team.
+Conduct training on PowerBI and Excel reports.
 
-### 🔗 REST APIs
 
-* For more complex authentication scenarios (OAuth 2.0)
-* Supports `httr::GET()` and `jsonlite::fromJSON()` for dashboard ingestion
+Security and Compliance:
+Rotate API tokens in Azure AD.
+Ensure GDPR/CCPA compliance for customer data.
 
-### 🔗 R Packages
 
-![httr](https://img.shields.io/badge/-httr-1f77b4)
-![jsonlite](https://img.shields.io/badge/-jsonlite-ff7f0e)
-![RODBC](https://img.shields.io/badge/-RODBC-2ca02c)
-![shiny](https://img.shields.io/badge/-shiny-17becf)
-![tidyverse](https://img.shields.io/badge/-tidyverse-d62728)
 
----
+Commands and Code Snippets:
 
-## 💻 Tech Stack
+Monitor ADF Pipeline (Azure CLI):az datafactory pipeline-run show --factory-name "AeristoADF" --resource-group "AeristoRG" --run-id "1234-5678-9012"
 
-### 🔧 Microsoft Dynamics AX
 
-![SQL Server](https://img.shields.io/badge/-SQL%20Server-CC2927?logo=microsoftsqlserver)
-![.NET](https://img.shields.io/badge/-.NET-512BD4?logo=dotnet)
-![OData](https://img.shields.io/badge/-OData-0072C6?logo=microsoft)
+Index Azure SQL Table:CREATE NONCLUSTERED INDEX IX_CustomerNo ON Staging_Customers (CustomerNo);
 
-### 🔧 Microsoft Dynamics 365 Business Central
 
-![D365 BC](https://img.shields.io/badge/-D365%20Business%20Central-0078D4?logo=microsoft)
-![OData V4](https://img.shields.io/badge/-OData%20v4-005B9E?logo=odata)
-![REST API](https://img.shields.io/badge/-REST%20API-008080)
+Update R Shiny App (Add Forecasting):library(forecast)
+# Add forecasting to Shiny server
+output$forecastPlot <- renderPlot({
+    ts_data <- ts(data()$OrderQty, frequency = 12)
+    fit <- auto.arima(ts_data)
+    forecast_data <- forecast(fit, h = 6)
+    plot(forecast_data, main = "6-Month Order Forecast")
+})
 
-### 🔧 Middleware & Cloud Tools
 
-![Azure Data Factory](https://img.shields.io/badge/-Azure%20Data%20Factory-0078D4?logo=microsoftazure)
-![Azure SQL](https://img.shields.io/badge/-Azure%20SQL-00BFFF?logo=microsoftsqlserver)
-![Power Query](https://img.shields.io/badge/-Power%20Query-217346?logo=microsoftexcel)
 
----
+Phase 3 Tech Stack:
+Phase 3 R Packages:
+💵 Estimated Tooling Costs (Annualized)
 
-## 📾 Conclusion
 
-The proposed solution uses **Azure Data Factory** to perform **incremental ETL operations** from Microsoft Dynamics AX into Business Central using schema-aligned transformations and staging via Azure SQL. This allows Aeristo to unify historical and live data without disrupting current operations.
 
-Once in place, this pipeline enables real-time reporting via **Excel**, **R**, and **RShiny**, leveraging **OData V4 and REST APIs** directly from Business Central. The architecture is cloud-based, **scalable, secure, and designed to minimize infrastructure costs**.
+Tool / Service
+Purpose
+Estimated Annual Cost
 
----
 
-> ✅ This proposal is designed for executive decision-makers, senior data engineers, and software architects. It ensures enterprise scalability and developer-friendly tools without compromising cost-efficiency or compatibility with modern data science stacks.
+
+Azure Data Factory
+ETL pipeline for AX → BC integration
+$1,200 - $3,000
+
+
+Azure SQL (Staging Layer)
+Temporary storage and transformation layer
+$600 - $1,500
+
+
+Microsoft Dynamics 365 BC API
+OData/REST API access (included in D365 license)
+Bundled with license
+
+
+RStudio + R Shiny (open-source)
+Dashboard & analytics engine
+Free (hosted internally)
+
+
+Optional: R Shiny Server Pro
+Managed R Shiny deployment (for IT support)
+~$10,000 (optional enterprise)
+
+
+Excel / Power Query
+Excel integration via OData
+Bundled with Office license
+
+
+
+These estimates are based on average Azure pricing tiers and assume a mid-size data volume. Final costs may vary based on refresh frequency and storage footprint.
+
+💻 Tech Stack
+🔧 Microsoft Dynamics AX
+
+🔧 Microsoft Dynamics 365 Business Central
+
+🔧 Middleware & Cloud Tools
+
+🔧 Analytics & Reporting
+
+🔧 R Packages
+
+📾 Conclusion
+This solution uses Azure Data Factory to perform incremental ETL operations from Microsoft Dynamics AX into Business Central, with schema-aligned transformations and staging via Azure SQL. The phased implementation ensures Aeristo unifies historical and live data without disrupting operations. Phases 1 and 2 deliver a robust data pipeline and actionable reporting tools, while Phase 3 ensures long-term scalability and reliability. The architecture is cloud-based, secure, and cost-effective, enabling real-time reporting via Excel, PowerBI, and R Shiny through OData V4 and REST APIs.
+
+✅ This case study and plan are designed for executive decision-makers, senior data engineers, and software architects, ensuring enterprise scalability and compatibility with modern data science stacks.
+
+
 
 
 
