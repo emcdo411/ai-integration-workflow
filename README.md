@@ -85,7 +85,13 @@ The ETL process unifies historical and live data:
 
 ## 🛠️ Phase 1: Data Integration and ETL Pipeline Setup
 
-***Estimated Timeframe:** 3-4 months*
+**Updated Timeline**: **4-6 weeks** (previously 3-4 months)
+- **Rationale**: Accelerated timeline leverages pre-built Azure DevOps CI/CD pipelines and modular R scripts for faster integration. The 4-6 week estimate assumes standard data access and stakeholder alignment.
+- **Contingency**: The timeline may extend beyond 6 weeks depending on:
+  - Availability and responsiveness of Aeristo’s internal teams for data access and validation.
+  - Support from the approved Azure DevOps engineer team for pipeline configuration and security compliance.
+  - Complexity of ERP data structures or unforeseen API limitations.
+  - Additional time may be required for iterative feedback or custom model tuning, potentially adding 2-4 weeks.
 
 ### **Tasks Involved:**
 
