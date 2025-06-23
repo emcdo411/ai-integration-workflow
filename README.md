@@ -63,9 +63,53 @@ This document outlines a modern, scalable ETL and data integration strategy for 
 
 ---
 
+## 📊 Data Consumption for Reporting
 
+### 📊 How R Shiny Connects and Adds Value
 
+R Shiny delivers interactive dashboards with advanced analytics capabilities, surpassing Power BI in customization for data scientists.
 
+**Benefits for Aeristo:**
+
+* **Real-Time Data:** Connects to Business Central APIs (REST/OData V4) for live updates.
+* **Interactive Dashboards:** Enables filtering of sales, inventory, or vendor trends.
+* **Advanced Analytics:** Supports forecasting and segmentation models.
+* **Deployment:** Host on Azure or internal servers for secure access.
+* **Cost-Effective:** Open-source, no per-user licensing fees.
+
+**Excel/Power BI Integration:** Power Query and Power BI connect to Azure SQL or Business Central OData feeds for user-friendly reports.
+
+---
+
+## 🤷️‍💼 Lightweight Local Storage Option: SQLite
+
+For small-scale deployments, limited stakeholders, or localized use-cases, **SQLite** provides a free, file-based, low-maintenance option to store transformed data and enable analytics.
+
+### ✅ Benefits:
+
+* **No setup needed**
+* **Works on any OS**
+* **No server required**
+* **Ideal for 1–3 user Shiny apps**
+* **Compatible with `DBI` and `RSQLite` packages**
+
+### 📈 Where It Fits:
+
+In Phase 2 or Phase 3, SQLite can serve as a staging or reporting layer **if** Business Central API usage is cost-prohibitive or real-time sync is unnecessary.
+
+```r
+library(DBI)
+library(RSQLite)
+
+con <- dbConnect(RSQLite::SQLite(), "aeristo_data.sqlite")
+query <- "SELECT * FROM inventory WHERE stock_on_hand < reorder_level"
+df <- dbGetQuery(con, query)
+dbDisconnect(con)
+```
+
+Use this to build R Shiny dashboards offline or in environments with tight budget/security restrictions.
+
+---
 
 
 
