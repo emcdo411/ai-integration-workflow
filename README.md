@@ -126,9 +126,41 @@ query <- "SELECT * FROM inventory WHERE stock_on_hand < reorder_level"
 df <- dbGetQuery(con, query)
 dbDisconnect(con)
 ```
-
 Use this to build R Shiny dashboards offline or in environments with tight budget/security restrictions.
 
+## 🚀 Robust Upgrade Path: Azure SQL or PostgreSQL
+
+If SQLite proves insufficient due to concurrent usage or scalability demands, a natural upgrade path would be **Azure SQL** or **PostgreSQL**.
+
+### 🏋️ Azure SQL
+* Fully managed PaaS by Microsoft
+* Native integration with Azure ecosystem (e.g., Data Factory, Synapse)
+* Scales seamlessly with R Shiny, Power BI, Excel
+* Excellent for enterprise-grade R Shiny dashboards
+
+### 🚀 PostgreSQL
+* Open-source, robust RDBMS with strong performance under concurrent loads
+* Compatible with `RPostgres` and `pool` packages in R
+* Works well in Dockerized or on-premise environments
+
+### 🔍 Code Sample (PostgreSQL)
+
+```r
+library(DBI)
+library(RPostgres)
+
+con <- dbConnect(RPostgres::Postgres(),
+  dbname = "aeristo",
+  host = "your-host-url",
+  port = 5432,
+  user = "your_user",
+  password = "your_password"
+)
+df <- dbGetQuery(con, "SELECT * FROM sales WHERE margin < 0.1")
+dbDisconnect(con)
+```
+
+These options can be implemented during **Phase 2** or **Phase 3** for apps with growing stakeholder access, large datasets, or concurrent real-time usage.
 ---
 
 
