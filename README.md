@@ -63,6 +63,26 @@ This document outlines a modern, scalable ETL and data integration strategy for 
 
 ---
 
+## 📊 Integration Workflow Diagram
+
+```mermaid
+graph LR
+    AX["Dynamics AX<br>Historical Data"]:::system -->|"OData/SQL Server"| ADF["Azure Data Factory<br>Incremental ETL"]:::etl
+    ADF -->|"REST API"| BC["D365 Business Central<br>Real-Time ERP"]:::system
+    ADF -->|"Load Raw & Transformed Data"| SQL["Azure SQL<br>Staging Layer"]:::db
+    SQL -->|"OData V4/JSON"| API["Excel/Power BI/R Shiny<br>Reporting & Analytics"]:::reporting
+    BC -->|"REST/OData V4"| API
+
+    classDef system fill:#4B8BBE,color:#fff;
+    classDef etl fill:#306998,color:#fff;
+    classDef db fill:#1E90FF,color:#fff;
+    classDef reporting fill:#228B22,color:#fff;
+```
+
+This diagram renders correctly in GitHub Markdown when Mermaid is supported and shows the full ETL flow.
+
+---
+
 ## 📊 Data Consumption for Reporting
 
 ### 📊 How R Shiny Connects and Adds Value
@@ -81,7 +101,7 @@ R Shiny delivers interactive dashboards with advanced analytics capabilities, su
 
 ---
 
-## 🤷️‍💼 Lightweight Local Storage Option: SQLite
+## 🤷️‍⚖️ Lightweight Local Storage Option: SQLite
 
 For small-scale deployments, limited stakeholders, or localized use-cases, **SQLite** provides a free, file-based, low-maintenance option to store transformed data and enable analytics.
 
@@ -110,7 +130,6 @@ dbDisconnect(con)
 Use this to build R Shiny dashboards offline or in environments with tight budget/security restrictions.
 
 ---
-
 
 
 
