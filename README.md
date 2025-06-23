@@ -161,6 +161,16 @@ dbDisconnect(con)
 ```
 
 These options can be implemented during **Phase 2** or **Phase 3** for apps with growing stakeholder access, large datasets, or concurrent real-time usage.
+
+📩 Conclusion
+This modernized solution uses Azure Data Factory and Azure Synapse Analytics (optional) to perform incremental ETL operations, integrating Microsoft Dynamics AX with Business Central via Azure SQL staging. The three-phase approach ensures Aeristo unifies historical and live data seamlessly:
+
+Phase 1 delivers a robust data pipeline.
+Phase 2 provides actionable insights through Power BI, Excel, and R Shiny dashboards.
+Phase 3 guarantees long-term scalability and compliance.
+The cloud-native architecture is secure, cost-effective, and scalable—enabling real-time analytics via Excel, Power BI, and R Shiny through OData V4 and REST APIs. Designed for executives, data engineers, and architects, this phased plan supports Aeristo’s modernization and analytics goals for 2025 and beyond.
+
+✅ This case study is optimized for GitHub readability and compatibility with modern cloud-native practices.
 ---
 
 
